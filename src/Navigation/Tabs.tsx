@@ -13,7 +13,6 @@ const Tabs = () => {
       initialRouteName='Feed'
     >
       <Tab.Screen name="Feed" component={FeedScreen} />
-      <Tab.Screen name="CreatePoll" component={ProfileScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
