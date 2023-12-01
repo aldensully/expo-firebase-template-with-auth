@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
 import Navigation from './src/Navigation/Navigation';
 import initializeResources from './src/Utils/initializeResources';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import defaultStore from './src/Stores/defaultStore';
 import AuthProvider from './src/Utils/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const loadingComplete = initializeResources();
@@ -19,17 +22,13 @@ export default function App() {
   }, [loadingUser, loadingComplete]);
 
   return (
-    <AuthProvider>
-      <Navigation />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <StatusBar style="light" />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Navigation />
+        </GestureHandlerRootView>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

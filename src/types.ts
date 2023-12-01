@@ -29,3 +29,9 @@ export type IconProps = {
   color: string;
   size: number;
 };
+
+export type ResizeOptions = {
+  width: number;
+  height: number;
+};
+
