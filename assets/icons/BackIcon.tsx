@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { SvgProps, Path } from "react-native-svg";
-import { View } from "../../src/Theme/Themed";
 import { IconProps } from "../../src/types";
+import { View } from "react-native";
 const BackIcon = (props: SvgProps & IconProps) => (
   <View style={{
     width: props.size ?? 24,

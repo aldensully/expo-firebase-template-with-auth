@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "your-app-name",
-    "slug": "your-app-slug",
+    "name": "poly",
+    "slug": "poly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,16 +15,41 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.aldensully.poly"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.aldensully.poly"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow access to your camera to upload a photo"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow access to your photos to upload a photo"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5484bb77-8d09-49c5-8030-829ee878954f"
+      }
     }
   }
 }

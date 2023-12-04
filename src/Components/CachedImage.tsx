@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Image, ImageProps, ImageStyle, Platform, View } from "react-native";
 import { Image as ExpoImage } from 'expo-image';
-import { apiFetchStorageUrl } from "../utils/helperFns";
+import { apiFetchStorageUrl } from "../Utils/utilFns";
 
 type Props = {
   storage_key: string;

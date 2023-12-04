@@ -3,11 +3,12 @@ import Svg, { SvgProps, Path } from "react-native-svg";
 import { IconProps } from "../../src/types";
 import { View } from "react-native";
 
-const CloseIcon = (props: SvgProps & IconProps) => (
+const PlusIcon = (props: SvgProps & IconProps) => (
   <View style={{
     width: props.size ?? 24,
     height: props.size ?? 24,
     justifyContent: 'center',
+    backgroundColor: 'transparent',
     alignItems: 'center'
   }}>
     <View style={{ aspectRatio: 1 }}>
@@ -22,13 +23,14 @@ const CloseIcon = (props: SvgProps & IconProps) => (
           stroke={props.color}
           strokeLinecap="round"
           strokeLinejoin="round"
-          fill='none'
-          strokeWidth={2.212}
-          d="m6.525 6.525 10.95 10.95m-10.95 0 10.95-10.95"
+          strokeWidth={2}
+          // d="M9 12h6m-3-3v6m-9-3a9 9 0 1 0 18.001 0A9 9 0 0 0 3 12Z"
+          d="M12 5v14m-7-7h14"
         />
       </Svg>
     </View>
   </View>
 );
 
-export default CloseIcon;
+
+export default PlusIcon;

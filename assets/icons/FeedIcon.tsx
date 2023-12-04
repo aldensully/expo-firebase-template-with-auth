@@ -3,7 +3,7 @@ import Svg, { SvgProps, Path } from "react-native-svg";
 import { IconProps } from "../../src/types";
 import { View } from "react-native";
 
-const CloseIcon = (props: SvgProps & IconProps) => (
+const FeedIcon = (props: SvgProps & IconProps) => (
   <View style={{
     width: props.size ?? 24,
     height: props.size ?? 24,
@@ -22,13 +22,12 @@ const CloseIcon = (props: SvgProps & IconProps) => (
           stroke={props.color}
           strokeLinecap="round"
           strokeLinejoin="round"
-          fill='none'
-          strokeWidth={2.212}
-          d="m6.525 6.525 10.95 10.95m-10.95 0 10.95-10.95"
+          strokeWidth={2}
+          d="M15 4h1a1 1 0 0 1 1 1v3.5M20 6c.264.112.52.217.768.315a1 1 0 0 1 .53 1.311L19 13M3.604 7.197l7.138-3.109a.96.96 0 0 1 1.27.527l4.924 11.902a1 1 0 0 1-.514 1.304L9.285 20.93a.96.96 0 0 1-1.27-.527L3.09 8.5a1 1 0 0 1 .514-1.303Z"
         />
       </Svg>
     </View>
   </View>
 );
 
-export default CloseIcon;
+export default FeedIcon;

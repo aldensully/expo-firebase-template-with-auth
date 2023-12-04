@@ -1,7 +1,6 @@
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let fonts = {
   'Nunito-Regular': require('../../assets/fonts/nunito/Nunito-Regular.ttf'),

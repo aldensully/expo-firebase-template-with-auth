@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { getAuth, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import defaultStore from '../Stores/defaultStore';
-import { User } from '../types';
+import { NavigationScreens, User } from '../types';
 import { navigationRef } from '../Navigation/NavigationRef';
-
-//import { db, auth } from '../../firebaseConfig';
+import { db, auth } from '../../firebaseConfig';
 
 const AuthProvider = ({ children }: any) => {
   const setUser = defaultStore(state => state.setUser);
@@ -14,53 +13,57 @@ const AuthProvider = ({ children }: any) => {
 
   //uncomment this when you have firebase setup
 
-  // async function getDbUser(uid: string): Promise<User | null> {
-  //   const docRef = doc(db, "users", uid);
-  //   const docSnap = await getDoc(docRef);
-  //   if (docSnap.exists()) {
-  //     return {
-  //       id: uid,
-  //       ...docSnap.data(),
-  //     } as User;
-  //   }
-  //   console.log('did not find user');
-  //   return null;
-  //   return null
-  // }
+  async function getDbUser(uid: string): Promise<User | null> {
+    const docRef = doc(db, "users", uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return {
+        id: uid,
+        ...docSnap.data(),
+      } as User;
+    }
+    console.log('did not find user');
+    return null;
+  }
 
-  // const handleNavigation = (route: string) => {
-  //   if (navigationRef?.isReady()) {
-  //     navigationRef?.navigate(route as never);
-  //   } else {
-  //     setTimeout(() => {
-  //       handleNavigation(route);
-  //     }, 100);
-  //   }
-  // };
+  const handleNavigation = (route: keyof NavigationScreens) => {
+    try {
+      if (navigationRef?.isReady()) {
+        navigationRef?.navigate(route);
+      } else {
+        setTimeout(() => {
+          handleNavigation(route);
+        }, 100);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  // useEffect(() => {
-  //   const unsub = onAuthStateChanged(auth, async (u) => {
-  //     if (u) {
-  //       const dbUser = await getDbUser(u.uid);
-  //       if (dbUser) {
-  //         setUser(dbUser);
-  //         handleNavigation('Tabs');
-  //       } else {
-  //         handleNavigation('AccountSetup');
-  //       }
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (u) => {
+      if (u) {
+        const dbUser = await getDbUser(u.uid);
+        if (dbUser) {
+          setUser(dbUser);
+          handleNavigation('Tabs');
+          Alert.alert('Found user');
+        } else {
+          handleNavigation('CreateAccount');
+        }
 
-  //     } else {
-  //       console.log('no user');
-  //       handleNavigation('Welcome');
-  //       setUser(null);
-  //     }
-  //     setLoadingUser(false);
-  //   });
+      } else {
+        console.log('no user');
+        handleNavigation('Welcome');
+        setUser(null);
+      }
+      setLoadingUser(false);
+    });
 
-  //   return () => {
-  //     unsub();
-  //   };
-  // }, []);
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
     <>

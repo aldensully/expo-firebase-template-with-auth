@@ -7,6 +7,7 @@ import defaultStore from './src/Stores/defaultStore';
 import AuthProvider from './src/Utils/AuthProvider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { app } from './firebaseConfig';
 
 const queryClient = new QueryClient();
 
@@ -24,9 +25,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <StatusBar style="light" />
+        <StatusBar style="dark" />
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Navigation />
+          {loadingComplete && <Navigation />}
         </GestureHandlerRootView>
       </AuthProvider>
     </QueryClientProvider>

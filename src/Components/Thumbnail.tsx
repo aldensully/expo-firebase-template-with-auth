@@ -2,10 +2,10 @@
 reuseable component for displaying user profile images or initials (if not picture)
 */
 import { useQuery } from "@tanstack/react-query";
-import { apiFetchStorageUrl } from "../utils/helperFns";
 import { Image, ImageStyle, Platform, View } from "react-native";
 import { Image as ExpoImage } from 'expo-image';
 import { Text, useThemeColor } from "../Theme/Themed";
+import { apiFetchStorageUrl } from "../Utils/utilFns";
 
 const Sizes = {
   sm: 24,

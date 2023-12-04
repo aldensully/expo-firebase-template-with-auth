@@ -49,24 +49,30 @@ const textSizes = {
     fontWeight: '700'
   },
   h2: {
-    fontSize: 20,
+    fontSize: 23,
     lineHeight: 24,
     fontWeight: '600'
   },
   h3: {
     fontSize: 17,
     lineHeight: 20,
-    fontWeight: '700'
+    fontWeight: '600'
   }
 };
 
 const fontFamilies = {
-  xs: 'Nunito-Bold',
-  sm: 'Nunito-Bold',
-  p: 'Nunito-Bold',
-  h1: 'Nunito-Black',
-  h2: 'Nunito-Black',
-  h3: 'Nunito-Black'
+  // xs: 'Nunito-Bold',
+  // sm: 'Nunito-Bold',
+  // p: 'Nunito-SemiBold',
+  // h1: 'Nunito-Black',
+  // h2: 'Nunito-ExtraBold',
+  // h3: 'Nunito-ExtraBold'
+  xs: 'System',
+  sm: 'System',
+  p: 'System',
+  h1: 'System',
+  h2: 'System',
+  h3: 'System'
 };
 
 export function Text(props: TextProps & TextVariant) {
@@ -110,7 +116,7 @@ export function Button(props: PressableProps & ViewProps & MyButtonProps) {
   const { surface1, surface2, surface3, secondaryText, primaryText, primaryButtonText, primary } = useThemeColor();
 
   const textColors = {
-    primary: '#fff',
+    primary: primaryButtonText,
     secondary: primaryText,
     default: primaryText
   };
@@ -184,7 +190,7 @@ export const Container = (props: ContainerProps) => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    height: 55,
+    height: 65,
     borderRadius: 50,
     paddingHorizontal: 32,
     alignSelf: 'center',

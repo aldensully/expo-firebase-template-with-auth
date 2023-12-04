@@ -8,11 +8,12 @@ import CloseIcon from '../../assets/icons/CloseIcon';
 type Props = {
   navigate?: boolean;
   onPress?: () => void;
+  color?: string;
 };
 
 const CloseButton = (props: Props) => {
-  const { onPress, navigate } = props;
   const colors = useThemeColor();
+  const { onPress, color = colors.primaryText, navigate } = props;
   const navigation = useNavigation();
 
   const handlePress = () => {
@@ -31,7 +32,7 @@ const CloseButton = (props: Props) => {
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-      <CloseIcon size={28} color={colors.primaryText} />
+      <CloseIcon size={28} color={color} />
     </Pressable>
   );
 };
