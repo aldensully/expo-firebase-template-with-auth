@@ -16,7 +16,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aldensully.poly"
+      "bundleIdentifier": "com.aldensully.poly",
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
@@ -50,6 +51,12 @@
       "eas": {
         "projectId": "5484bb77-8d09-49c5-8030-829ee878954f"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5484bb77-8d09-49c5-8030-829ee878954f"
     }
   }
 }
