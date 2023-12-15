@@ -20,6 +20,7 @@ import ColorPicker, { HueSlider, Panel1, Preview } from 'reanimated-color-picker
 import AlignLeftIcon from '../../assets/icons/AlignLeftIcon';
 import AlignCenterIcon from '../../assets/icons/AlignCenterIcon';
 import AlignRightIcon from '../../assets/icons/AlignRightIcon';
+import KeyboardIcon from '../../assets/icons/KeyboardIcon';
 
 const DoneButton = () => {
   const colors = useThemeColor();
@@ -110,11 +111,13 @@ const NewPage = ({ navigation }: ScreenProps<'NewPage'>) => {
       x: width / 4,
       y: height / 2,
       z: 3,
+      rotate: 0,
       size: 18,
       scale: 1
     };
     setTexts([...texts, t]);
     setOpenInput(false);
+    setFocusedTextId(null);
     setNewText('');
   };
 
@@ -151,6 +154,8 @@ const NewPage = ({ navigation }: ScreenProps<'NewPage'>) => {
     if (!focused) return;
     console.log("FOCUSED");
     setFocusedTextId(focused.id);
+    setColor(focused.color);
+    setFont(focused.font);
     setNewText(focused.body);
     setOpenInput(true);
   };
@@ -159,7 +164,7 @@ const NewPage = ({ navigation }: ScreenProps<'NewPage'>) => {
     <Container backgroundColor='#fff'>
 
       {overlaysShown && <Header
-        // style={{ position: 'absolute', zIndex: 2 }}
+        style={{ backgroundColor: colors.surface1 }}
         headerLeft={<BackButton navigate />}
         headerRight={<DoneButton />}
       />
@@ -204,7 +209,7 @@ const NewPage = ({ navigation }: ScreenProps<'NewPage'>) => {
               onBlur={handleInputBlur}
               onFocus={handleInputFocus}
             />
-            <View style={{ height: 40, gap: 10, width: '100%', paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ height: 40, gap: 10, width: '100%', paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center' }}>
               {colorPickerOpen && <View style={{
                 position: 'absolute',
                 zIndex: 1000,
@@ -233,11 +238,21 @@ const NewPage = ({ navigation }: ScreenProps<'NewPage'>) => {
               <View style={{ width: 1, height: 20, backgroundColor: colors.surface3 }} />
               <FontStyleContainer font={font} setFont={setFont} />
               <View style={{ width: 1, height: 20, backgroundColor: colors.surface3 }} />
+              <Pressable
+                onPress={handleInputBlur}
+                style={{
+                  width: 40,
+                  height: 40,
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                <KeyboardIcon size={24} color={colors.primaryText} />
+              </Pressable>
             </View>
           </View>
         </KeyboardAvoidingView>
       }
-      <View style={{ flex: 1, zIndex: 1 }}>
+      <View style={{ flex: 1, zIndex: 1, overflow: 'hidden' }}>
         {texts?.map(t => t.id !== focusedTextId && (
           <MovableText key={t.id} text={t} onChange={handleUpdateText} onFocus={() => handleTextFocus(t.id)} />
         ))}
@@ -403,6 +418,21 @@ const MovableText = ({ text, onChange, onFocus }: {
   const textScale = useSharedValue(text.scale);
   const lastScale = useSharedValue(text.scale);
   const fontSize = useSharedValue(text.size);
+  const lastRotation = useSharedValue(text.rotate);
+  const rotation = useSharedValue(text.rotate);
+
+  const rotateGesture = Gesture.Rotation()
+    .onStart(() => {
+      lastRotation.value = rotation.value;
+    })
+    .onUpdate((e) => {
+      console.log(e.rotation, e.numberOfPointers);
+      rotation.value = lastRotation.value + e.rotation * 180 / Math.PI;
+    })
+    .onEnd(() => {
+      handleSetRotation(rotation.value);
+    })
+    .runOnJS(true);
 
   const pinchGesture = Gesture.Pinch()
     .onStart((ctx) => {
@@ -410,7 +440,6 @@ const MovableText = ({ text, onChange, onFocus }: {
     })
     .onUpdate((e) => {
       const { scale, focalX, focalY, } = e;
-      // fontSize.value = scale * text.size;
       textScale.value = scale * lastScale.value;
     })
     .onEnd(() => {
@@ -441,7 +470,7 @@ const MovableText = ({ text, onChange, onFocus }: {
   }).runOnJS(true);
 
 
-  const composed = Gesture.Race(tapGesture, dragGesture, pinchGesture);
+  const composed = Gesture.Race(rotateGesture, tapGesture, dragGesture, pinchGesture);
 
   const handleSetOffsets = (x: number, y: number) => {
     const t: PageTextType = {
@@ -460,18 +489,26 @@ const MovableText = ({ text, onChange, onFocus }: {
     onChange(t);
   };
 
+  const handleSetRotation = (rotate: number) => {
+    const t: PageTextType = {
+      ...text,
+      rotate
+    };
+    onChange(t);
+  };
+
   const animStyle = useAnimatedStyle(() => {
     return {
       transform: [
         { translateX: offset.value.x },
         { translateY: offset.value.y },
-        { scale: textScale.value }
+        { scale: textScale.value },
+        { rotate: `${rotation.value}deg` }
       ],
       position: 'absolute',
       zIndex: text.z,
-      textAlign: 'center',
+      textAlign: text.align,
       fontSize: text.size,
-      fontFamily: text.font,
       color: text.color,
     };
   });
@@ -480,7 +517,7 @@ const MovableText = ({ text, onChange, onFocus }: {
     <GestureDetector gesture={composed}>
       {/* <Animated.View style={animStyle}> */}
       <Animated.Text
-        style={animStyle}
+        style={[animStyle, { fontFamily: text.font }]}
       >{text.body}</Animated.Text>
       {/* </Animated.View> */}
     </GestureDetector>

@@ -55,7 +55,8 @@ export type PageTextType = {
   z: number;
   size: number;
   scale: number;
-  align: string;
+  align: 'left' | 'center' | 'right';
+  rotate: number;
   color: string;
   font: string;
 };
