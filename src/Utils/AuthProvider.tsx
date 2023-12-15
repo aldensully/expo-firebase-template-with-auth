@@ -6,10 +6,12 @@ import defaultStore from '../Stores/defaultStore';
 import { NavigationScreens, User } from '../types';
 import { navigationRef } from '../Navigation/NavigationRef';
 import { db, auth } from '../../firebaseConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthProvider = ({ children }: any) => {
   const setUser = defaultStore(state => state.setUser);
   const setLoadingUser = defaultStore(state => state.setLoadingUser);
+  const setHasAccount = defaultStore(state => state.setHasAccount);
 
   //uncomment this when you have firebase setup
 
@@ -22,7 +24,6 @@ const AuthProvider = ({ children }: any) => {
         ...docSnap.data(),
       } as User;
     }
-    console.log('did not find user');
     return null;
   }
 
@@ -43,19 +44,28 @@ const AuthProvider = ({ children }: any) => {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (u) => {
       if (u) {
+        setHasAccount(true);
         const dbUser = await getDbUser(u.uid);
         if (dbUser) {
           setUser(dbUser);
-          handleNavigation('Tabs');
-          Alert.alert('Found user');
+          handleNavigation('Home');
         } else {
-          handleNavigation('CreateAccount');
+          handleNavigation('Welcome');
+          Alert.alert('Error', 'User not found, contact support: aw.sullivan17@gmail.com');
         }
-
       } else {
-        console.log('no user');
-        handleNavigation('Welcome');
-        setUser(null);
+        setHasAccount(false);
+        console.log('no auth user, checking for local user');
+        const res = await AsyncStorage.getItem('user');
+        if (res === null) {
+          handleNavigation('OnboardingTheme');
+          setUser(null);
+        } else {
+          console.log('found local user');
+          const usr = JSON.parse(res);
+          setUser(usr);
+          handleNavigation('Main');
+        }
       }
       setLoadingUser(false);
     });

@@ -44,7 +44,7 @@ const Thumbnail = (props: Props) => {
     }, style]}>
       {username && <Text
         type='h3'
-        style={{ fontFamily: 'Nunito-Black', fontSize: TextSizes[size] }}
+        style={{ fontFamily: 'SingleDay', fontSize: TextSizes[size] }}
         color={colors.secondaryText}>{username[0]}</Text>
       }
     </View>

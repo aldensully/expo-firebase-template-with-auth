@@ -29,34 +29,34 @@ type TextVariant = {
 
 const textSizes = {
   xs: {
-    fontSize: 12,
-    lineHeight: 14,
-    fontWeight: '400'
+    fontSize: 13,
+    // lineHeight: 14,
+    // fontWeight: '400'
   },
   sm: {
     fontSize: 14,
-    lineHeight: 14,
-    fontWeight: '400'
+    // lineHeight: 14,
+    // fontWeight: '400'
   },
   p: {
     fontSize: 16,
-    lineHeight: 20,
-    fontWeight: '400'
+    // lineHeight: 20,
+    // fontWeight: '400'
   },
   h1: {
-    fontSize: 24,
-    lineHeight: 28,
-    fontWeight: '700'
+    fontSize: 28,
+    // lineHeight: 28,
+    // fontWeight: '700'
   },
   h2: {
-    fontSize: 23,
-    lineHeight: 24,
-    fontWeight: '600'
+    fontSize: 24,
+    // lineHeight: 24,
+    // fontWeight: '600'
   },
   h3: {
-    fontSize: 17,
-    lineHeight: 20,
-    fontWeight: '600'
+    fontSize: 20,
+    // lineHeight: 20,
+    // fontWeight: '600'
   }
 };
 
@@ -67,12 +67,12 @@ const fontFamilies = {
   // h1: 'Nunito-Black',
   // h2: 'Nunito-ExtraBold',
   // h3: 'Nunito-ExtraBold'
-  xs: 'System',
-  sm: 'System',
-  p: 'System',
-  h1: 'System',
-  h2: 'System',
-  h3: 'System'
+  xs: 'SingleDay',
+  sm: 'SingleDay',
+  p: 'SingleDay',
+  h1: 'SingleDay',
+  h2: 'SingleDay',
+  h3: 'SingleDay'
 };
 
 export function Text(props: TextProps & TextVariant) {
@@ -83,7 +83,7 @@ export function Text(props: TextProps & TextVariant) {
     color,
     fontSize: textSizes[type].fontSize,
     fontFamily: fontFamilies[type],
-    fontWeight: textSizes[type].fontWeight as '400' | '500' | '600' | '700'
+    // fontWeight: textSizes[type].fontWeight as '400' | '500' | '600' | '700'
   }, style]} {...otherProps} />;
 }
 
@@ -91,20 +91,19 @@ type MyViewProps = {
   showInsetTop?: boolean;
 };
 
-export function View(props: ViewProps & MyViewProps) {
-  const { style, ...otherProps } = props;
+export function View(props: PressableProps & MyViewProps) {
+  const { ...otherProps } = props;
   const { top: paddingTop } = useSafeAreaInsets();
   const { surface1 } = useThemeColor();
 
-  return <DefaultView style={[{
-    backgroundColor: surface1,
-    paddingTop: props.showInsetTop ? paddingTop : 0
-  }, style]} {...otherProps} />;
+  return <Pressable
+    style={[{
+      paddingTop: props.showInsetTop ? paddingTop : 0
+    }]} {...otherProps} />;
 }
 
 type MyButtonProps = {
-  type?: 'primary' | 'secondary' | 'default';
-  variant: 'round' | 'square';
+  type?: 'primary' | 'secondary';
   loading?: boolean;
   title?: string | undefined;
   sizeVariant?: 'medium' | 'large';
@@ -112,18 +111,18 @@ type MyButtonProps = {
 };
 
 export function Button(props: PressableProps & ViewProps & MyButtonProps) {
-  const { style, loading = false, sizeVariant = 'medium', title, disabled, type = 'default', onPress, variant = 'square', children, ...otherProps } = props;
-  const { surface1, surface2, surface3, secondaryText, primaryText, primaryButtonText, primary } = useThemeColor();
+  const { style, loading = false, sizeVariant = 'medium', title, disabled, type = 'default', onPress, children, ...otherProps } = props;
+  const colors = useThemeColor();
 
   const textColors = {
-    primary: primaryButtonText,
-    secondary: primaryText,
-    default: primaryText
+    primary: colors.primaryButtonText,
+    secondary: colors.primaryText,
+    default: colors.primaryText
   };
 
   const bgColors = {
-    primary: primary,
-    secondary: surface2,
+    primary: colors.secondary,
+    secondary: colors.surface3,
     default: 'transparent'
   };
 
@@ -190,9 +189,9 @@ export const Container = (props: ContainerProps) => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    height: 65,
-    borderRadius: 50,
-    paddingHorizontal: 32,
+    borderRadius: 8,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',

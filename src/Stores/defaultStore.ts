@@ -8,6 +8,10 @@ type Store = {
   setLoadingUser: (loadingUser: boolean) => void;
   feedScrollListener: number;
   scrollFeed: () => void;
+  hasAccount: boolean;
+  setHasAccount: (hasAccount: boolean) => void;
+  activeDiaryId: string | null;
+  setActiveDiaryId: (activeDiaryId: string | null) => void;
 };
 
 const defaultStore = create<Store>((set) => ({
@@ -16,7 +20,11 @@ const defaultStore = create<Store>((set) => ({
   loadingUser: true,
   setLoadingUser: (loadingUser: boolean) => set({ loadingUser }),
   feedScrollListener: 0,
-  scrollFeed: () => set(state => ({ feedScrollListener: state.feedScrollListener + 1 }))
+  scrollFeed: () => set(state => ({ feedScrollListener: state.feedScrollListener + 1 })),
+  hasAccount: false,
+  setHasAccount: (hasAccount: boolean) => set({ hasAccount }),
+  activeDiaryId: null,
+  setActiveDiaryId: (activeDiaryId: string | null) => set({ activeDiaryId })
 }));
 
 export default defaultStore;

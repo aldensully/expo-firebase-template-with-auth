@@ -35,8 +35,8 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps<'Welcome'>) => {
     <Container showInsetBottom>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ gap: 8, alignItems: 'center', marginTop: 200 }}>
-          <Image source={require('../../../assets/icon.png')} style={{ width: 160, height: 160 }} />
-          <Text type='h1' style={{ fontSize: 32, fontFamily: 'System', fontWeight: '900', marginTop: -20 }}>POLY</Text>
+          {/* <Image source={require('../../../assets/icon.png')} style={{ width: 160, height: 160 }} /> */}
+          {/* <Text type='h1' style={{ fontSize: 32, fontFamily: 'System', fontWeight: '900', marginTop: -20 }}></Text> */}
         </View>
         {/* <Text style={{ textAlign: 'center', maxWidth: '85%', marginTop: 32 }} type='h2'>We believe in small steps and social support to help you accomplish your goals</Text> */}
       </View>

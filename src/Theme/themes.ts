@@ -20,20 +20,20 @@ type BrandTheme = {
 
 export const LightTheme: BrandTheme = {
   colors: {
-    background: '#FFF',
-    card: '#fff',
+    background: '#F4F6F0',
+    card: '#F4F6F0',
     text: '#20202A',
     border: '#fff',
     notification: '#000',
-    primary: '#3338A8',
-    secondary: '#FF159C',
-    primaryText: '#000',
-    secondaryText: '#868686',
-    danger: '#F70F1D',
-    primaryButtonText: '#fff',
-    surface1: '#fff',
-    surface2: '#EFEFEF',
-    surface3: '#D3D3D3'
+    primary: '#608E06',
+    secondary: '#D2E5AB',
+    primaryText: '#292C24',
+    secondaryText: '#888D7F',
+    danger: '#FF3D00',
+    primaryButtonText: '#608E06',
+    surface1: '#F4F6F0',
+    surface2: '#ffffff',
+    surface3: '#DDE1D4'
   },
   dark: false
 };

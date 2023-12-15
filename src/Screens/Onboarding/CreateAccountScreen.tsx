@@ -89,7 +89,6 @@ const CreateAccountScreen = ({ navigation, route }: ScreenProps<'CreateAccount'>
     }
 
     setUser(input);
-    navigation.navigate('Tabs');
     setLoading(true);
   };
 
@@ -232,7 +231,7 @@ const CreateAccountScreen = ({ navigation, route }: ScreenProps<'CreateAccount'>
               borderBottomColor: colors.secondaryText,
               backgroundColor: colors.surface1,
               fontSize: 28,
-              fontFamily: 'Nunito-Bold',
+              fontFamily: 'SingleDay',
               color: colors.primaryText,
               minWidth: 200,
               marginTop: 32,
@@ -250,7 +249,6 @@ const CreateAccountScreen = ({ navigation, route }: ScreenProps<'CreateAccount'>
         title="Next"
         type='primary'
         onPress={handleNext}
-        variant='round'
         disabled={username.length < 3}
         loading={loading}
         style={{ width: 200, marginBottom: 32 }}

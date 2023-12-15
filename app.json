@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "poly",
-    "slug": "poly",
+    "name": "lately",
+    "slug": "lately",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aldensully.poly",
+      "bundleIdentifier": "com.aldensully.lately",
       "buildNumber": "4"
     },
     "android": {
@@ -28,7 +28,7 @@
         "android.permission.CAMERA",
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.aldensully.poly"
+      "package": "com.aldensully.lately"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,13 +37,13 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow access to your camera to upload a photo"
+          "cameraPermission": "Lately needs access to your camera to upload a photo"
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow access to your photos to upload a photo"
+          "photosPermission": "Lately needs access to your photos to upload a photo"
         }
       ]
     ],
@@ -54,9 +54,6 @@
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/5484bb77-8d09-49c5-8030-829ee878954f"
     }
   }
 }

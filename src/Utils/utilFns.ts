@@ -3,7 +3,8 @@ import { db, storage } from '../../firebaseConfig';
 import { getStorage, ref, getDownloadURL, uploadString, uploadBytesResumable, uploadBytes } from "firebase/storage";
 import { where, addDoc, collection, doc, getDoc, getDocs, QueryConstraint, getFirestore, query, setDoc, QueryFieldFilterConstraint, updateDoc, orderBy } from 'firebase/firestore';
 import { SaveFormat, manipulateAsync } from 'expo-image-manipulator';
-import { Poll, PollWithUser, Question, ResizeOptions, Vote } from '../types';
+import { ResizeOptions } from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export async function fetchDocuments<T>(key: string, queryConstraints: QueryFieldFilterConstraint[]): Promise<T[]> {
   try {
@@ -27,169 +28,26 @@ export async function fetchDocuments<T>(key: string, queryConstraints: QueryFiel
   }
 };
 
-export async function fetchPollsByUser(user_id: string): Promise<Poll[]> {
-  try {
-    const collectionRef = collection(db, 'polls');
-    const q = query(collectionRef, where("user_id", "==", user_id), orderBy('creation_date', 'desc'));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      return [];
-    } else {
-      return querySnapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        } as Poll;
-      });
-    }
 
+export async function apiListDiaries(user_id: string) {
+  try {
+    const res = await AsyncStorage.getItem('diaries');
+    if (res == null) return [];
+    return JSON.parse(res);
   } catch (e) {
-    console.log(e);
     return [];
   }
-};
+}
 
-
-
-export async function fetchPolls(): Promise<Poll[]> {
+export async function apiGetDiary(diaryId: string | null) {
+  if (!diaryId) return null;
   try {
-    const collectionRef = collection(db, 'polls');
-    const q = query(collectionRef, orderBy('creation_date', 'desc'));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      return [];
-    } else {
-      return querySnapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        } as Poll;
-      });
-    }
-
+    const res = await AsyncStorage.getItem('diaries');
+    if (res == null) return [];
+    const d = JSON.parse(res);
+    return d.find((diary: any) => diary.id == diaryId) ?? null;
   } catch (e) {
-    console.log(e);
     return [];
-  }
-};
-
-export async function fetchQuestions(): Promise<Question[]> {
-  try {
-    const collectionRef = collection(db, 'questions');
-    const q = query(collectionRef, orderBy('creation_date', 'desc'));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) {
-      return [];
-    } else {
-      return querySnapshot.docs.map(doc => {
-        return {
-          id: doc.id,
-          ...doc.data()
-        } as Question;
-      });
-    }
-
-  } catch (e) {
-    console.log(e);
-    return [];
-  }
-};
-
-export async function fetchDocument<T>(path: string): Promise<T | null> {
-  try {
-    const docRef = doc(db, path);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return {
-        id: docSnap.id,
-        ...docSnap.data()
-      } as T;
-    }
-    return null;
-  } catch (e) {
-    console.log("ERROR: ", e);
-    return null;
-  }
-}
-
-export async function createRecord<T>(collection_id: string, record_id: string, data: any): Promise<boolean> {
-  try {
-    const docRef = doc(collection(db, collection_id), record_id);
-    await setDoc(docRef, data);
-    return true;
-  } catch (e) {
-    console.error('Error adding document: ', e);
-    return false;
-  }
-}
-
-export async function createPoll(data: Poll): Promise<Poll | null> {
-  try {
-    // const storage = getStorage();
-    // const imgUploadPromises = data.options.map(async (o, index) => {
-    //   if (o.type === 'image' && o.image) {
-    //     const optionId = generateUUID();
-    //     const imageRef = ref(storage, optionId);
-    //     const finalUri = await resizeImage(540, 720, o.image);
-    //     if (!finalUri) return null;
-    //     const blob = await uriToBlob(finalUri);
-    //     const imageSnapshot = await uploadBytes(imageRef, blob);
-    //     const downloadURL = await getDownloadURL(imageSnapshot.ref);
-    //     return { index, downloadURL, optionId };
-    //   }
-    //   return null;
-    // });
-
-    // const imgUris = await Promise.all(imgUploadPromises);
-
-    // const newPoll: Poll = {
-    //   id: generateUUID(),
-    //   user_id: data.user_id,
-    //   question: data.question,
-    //   options: data.options.map((o, index) => {
-    //     const imgUriObj = imgUris.find(uriObj => uriObj && uriObj.index === index);
-    //     return {
-    //       id: imgUriObj ? imgUriObj.optionId : generateUUID(),
-    //       text: o.text,
-    //       image: imgUriObj ? imgUriObj.downloadURL : null,
-    //       type: o.type
-    //     };
-    //   }),
-    //   color: data.color,
-    //   creation_date: new Date().getTime(),
-    //   votes: data.options.map(() => 0)
-    // };
-
-    const docRef = doc(collection(db, 'polls'), data.id);
-    await setDoc(docRef, data);
-    return data;
-  } catch (e) {
-    console.error('Error in createPoll: ', e);
-    return null;
-  }
-}
-
-export async function fetchMyVote(user_id: string, poll_id: string): Promise<Vote | null> {
-  try {
-    const collectionRef = collection(db, 'votes');
-    const q = query(collectionRef, where('user_id', '==', user_id), where('poll_id', '==', poll_id));
-    const querySnapshot = await getDocs(q);
-    if (querySnapshot.empty) return null;
-    return querySnapshot.docs[0].data() as Vote;
-  } catch (e) {
-    console.error('Error adding document: ', e);
-    return null;
-  }
-}
-
-export async function updateRecord<T>(collection_id: string, record_id: string, data: any): Promise<boolean> {
-  try {
-    const docRef = doc(collection(db, collection_id), record_id);
-    await updateDoc(docRef, data);
-    return true;
-  } catch (e) {
-    console.error('Error adding document: ', e);
-    return false;
   }
 }
 

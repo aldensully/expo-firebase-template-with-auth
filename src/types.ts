@@ -1,71 +1,84 @@
+import { NavigationProp } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { LegacyRef } from 'react';
+import { TextInput } from 'react-native';
 
 //main stack
 export type NavigationScreens = {
-  Tabs: undefined;
+  Home: undefined;
   Welcome: undefined;
+  Main: undefined;
+  OnboardingTheme: undefined;
   CreateAccount: undefined;
-  Settings: undefined;
-  CreatePoll: undefined;
-};
-
-//bottom tab screens
-export type TabScreens = {
-  Feed: undefined;
-  Plus: undefined;
-  Profile: undefined;
+  CustomizeScreen: undefined;
+  FeedbackScreen: undefined;
+  Menu: undefined;
+  NewPage: undefined;
 };
 
 //screen props
 // export type ScreenProps = NativeStackScreenProps<RootStackParamList<T>>;
 export type ScreenProps<Screen extends keyof NavigationScreens> = NativeStackScreenProps<NavigationScreens, Screen>;
-export type TabScreenProps<Screen extends keyof TabScreens> = NativeStackScreenProps<TabScreens, Screen>;
-
+export type UseNavigationType = NavigationProp<NavigationScreens>;
 export type User = {
   id: string;
   username: string;
   creation_date: string;
 };
 
-export type Option = {
-  id: string,
-  type: 'text' | 'image',
-  image: string | null,
-  text: string | null;
-};
-
-export type Poll = {
+export type Diary = {
   id: string;
-  question: string;
-  options: Option[];
-  votes: number[];
+  title: string;
+  color: string;
   user_id: string;
-  color: string | null;
-  creation_date: number;
+  pages: Page[];
+  creation_date: string;
 };
 
-export type Question = {
+export type ImageShape = 'polaroid' | 'circle' | 'square';
+
+export type PageImageType = {
   id: string;
-  question: string;
-  image: string | null;
-  options: Option[];
-  votes: number[];
-  type: 'poll' | 'binary' | 'text' | 'image' | 'draw' | 'audio' | 'fillInTheBlank';
-  color: string | null;
-  user_id: string;
-  creation_date: number;
+  x: number;
+  y: number;
+  z: number;
+  shape: ImageShape;
+  width: number;
+  height: number;
 };
 
-export type PollWithUser = {
-  poll: Poll;
-  user: User;
-};
-
-export type Vote = {
+export type PageTextType = {
   id: string;
-  poll_id: string;
-  option_id: string;
-  user_id: string;
+  body: string;
+  x: number;
+  y: number;
+  z: number;
+  size: number;
+  scale: number;
+  align: string;
+  color: string;
+  font: string;
+};
+
+export type PageStickerType = {
+  id: string;
+  key: string;
+  x: number;
+  y: number;
+  z: number;
+  size: number;
+};
+
+export type Page = {
+  id: string;
+  number: string;
+  title: string;
+  content: string;
+  diary_id: string;
+  images: PageImageType[];
+  texts: PageTextType[];
+  stickers: PageStickerType[];
+  creation_date: string;
 };
 
 export type IconProps = {

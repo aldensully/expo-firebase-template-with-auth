@@ -3,12 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 
 let fonts = {
-  'Nunito-Regular': require('../../assets/fonts/nunito/Nunito-Regular.ttf'),
-  'Nunito-Medium': require('../../assets/fonts/nunito/Nunito-Medium.ttf'),
-  'Nunito-SemiBold': require('../../assets/fonts/nunito/Nunito-SemiBold.ttf'),
-  'Nunito-Bold': require('../../assets/fonts/nunito/Nunito-Bold.ttf'),
-  'Nunito-ExtraBold': require('../../assets/fonts/nunito/Nunito-ExtraBold.ttf'),
-  'Nunito-Black': require('../../assets/fonts/nunito/Nunito-Black.ttf'),
+  'SingleDay': require('../../assets/fonts/Single_Day/SingleDay-Regular.ttf'),
 };
 
 const initializeResources = () => {
