@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "lately",
-    "slug": "lately",
+    "name": "appName",
+    "slug": "appName",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.aldensully.lately",
+      "bundleIdentifier": "com.identifier.name",
       "buildNumber": "4"
     },
     "android": {
@@ -24,32 +24,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.CAMERA",
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.aldensully.lately"
+      "package": "com.identifier.name"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-camera",
-        {
-          "cameraPermission": "Lately needs access to your camera to upload a photo"
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Lately needs access to your photos to upload a photo"
-        }
-      ]
-    ],
     "extra": {
       "eas": {
-        "projectId": "5484bb77-8d09-49c5-8030-829ee878954f"
+        "projectId": "Your project id"
       }
     },
     "runtimeVersion": {

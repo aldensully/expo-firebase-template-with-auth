@@ -1,18 +1,16 @@
-import { StyleSheet, Text as DefaultText, useColorScheme, View as DefaultView, Pressable, PressableProps, GestureResponderEvent, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text as DefaultText, useColorScheme, View as DefaultView, Pressable, PressableProps, GestureResponderEvent, ActivityIndicator, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import { LightTheme } from './themes';
+import { LightTheme, DarkTheme } from './themes';
 import { ReactElement } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useThemeColor() {
   const theme = useColorScheme() ?? 'light';
-
-  return LightTheme.colors;
-  // if (theme === 'light') {
-  //   return LightTheme.colors;
-  // } else {
-  //   return DarkTheme.colors;
-  // }
+  if (theme === 'light') {
+    return LightTheme.colors;
+  } else {
+    return DarkTheme.colors;
+  }
 }
 
 type ThemeProps = {
@@ -22,8 +20,9 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
+type TextType = 'h1' | 'h2' | 'h3' | 'p' | 'sm' | 'xs';
 type TextVariant = {
-  type?: 'xs' | 'sm' | 'p' | 'h1' | 'h2' | 'h3';
+  type?: TextType;
   color?: string;
 };
 
@@ -34,12 +33,12 @@ const textSizes = {
     // fontWeight: '400'
   },
   sm: {
-    fontSize: 14,
+    fontSize: 15,
     // lineHeight: 14,
     // fontWeight: '400'
   },
   p: {
-    fontSize: 16,
+    fontSize: 17,
     // lineHeight: 20,
     // fontWeight: '400'
   },
@@ -60,20 +59,30 @@ const textSizes = {
   }
 };
 
-const fontFamilies = {
-  // xs: 'Nunito-Bold',
-  // sm: 'Nunito-Bold',
-  // p: 'Nunito-SemiBold',
-  // h1: 'Nunito-Black',
-  // h2: 'Nunito-ExtraBold',
-  // h3: 'Nunito-ExtraBold'
-  xs: 'SingleDay',
-  sm: 'SingleDay',
-  p: 'SingleDay',
-  h1: 'SingleDay',
-  h2: 'SingleDay',
-  h3: 'SingleDay'
+const androidFontFamilies = {
+  xs: 'Inter-Regular',
+  sm: 'Inter-Regular',
+  p: 'Inter-Regular',
+  h1: 'Inter-Bold',
+  h2: 'Inter-SemiBold',
+  h3: 'Inter-Medium'
 };
+const iosFontFamilies = {
+  xs: 'SF-Pro-Regular',
+  sm: 'SF-Pro-Regular',
+  p: 'SF-Pro-Regular',
+  h1: 'SF-Pro-Bold',
+  h2: 'SF-Pro-SemiBold',
+  h3: 'SF-Pro-Medium'
+};
+
+function getFontFamily(type: TextType) {
+  if (Platform.OS === 'ios') {
+    return iosFontFamilies[type];
+  } else {
+    return androidFontFamilies[type];
+  }
+}
 
 export function Text(props: TextProps & TextVariant) {
   const colors = useThemeColor();
@@ -82,8 +91,7 @@ export function Text(props: TextProps & TextVariant) {
   return <DefaultText style={[{
     color,
     fontSize: textSizes[type].fontSize,
-    fontFamily: fontFamilies[type],
-    // fontWeight: textSizes[type].fontWeight as '400' | '500' | '600' | '700'
+    fontFamily: getFontFamily(type),
   }, style]} {...otherProps} />;
 }
 
@@ -94,7 +102,6 @@ type MyViewProps = {
 export function View(props: PressableProps & MyViewProps) {
   const { ...otherProps } = props;
   const { top: paddingTop } = useSafeAreaInsets();
-  const { surface1 } = useThemeColor();
 
   return <Pressable
     style={[{
@@ -164,6 +171,7 @@ export function Button(props: PressableProps & ViewProps & MyButtonProps) {
     }
   </Pressable>;
 }
+
 type ContainerProps = {
   showInsetTop?: boolean;
   showInsetBottom?: boolean;
@@ -190,8 +198,6 @@ export const Container = (props: ContainerProps) => {
 const styles = StyleSheet.create({
   buttonStyle: {
     borderRadius: 8,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',

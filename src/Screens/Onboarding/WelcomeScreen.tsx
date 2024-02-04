@@ -1,12 +1,20 @@
 import { StyleSheet, Image, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScreenProps } from '../../types';
 import { Container, Text } from '../../Theme/Themed';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { OAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth } from '../../../firebaseConfig';
+import * as SplashScreen from 'expo-splash-screen';
 
 const WelcomeScreen = ({ navigation, route }: ScreenProps<'Welcome'>) => {
+
+
+  useEffect(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
+
   const signIn = async () => {
     try {
       const appleCredential = await AppleAuthentication.signInAsync({
@@ -35,10 +43,8 @@ const WelcomeScreen = ({ navigation, route }: ScreenProps<'Welcome'>) => {
     <Container showInsetBottom>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ gap: 8, alignItems: 'center', marginTop: 200 }}>
-          {/* <Image source={require('../../../assets/icon.png')} style={{ width: 160, height: 160 }} /> */}
-          {/* <Text type='h1' style={{ fontSize: 32, fontFamily: 'System', fontWeight: '900', marginTop: -20 }}></Text> */}
+          <Text type='h1' style={{ fontSize: 32, fontFamily: 'System', fontWeight: '900', marginTop: -20 }}>My App</Text>
         </View>
-        {/* <Text style={{ textAlign: 'center', maxWidth: '85%', marginTop: 32 }} type='h2'>We believe in small steps and social support to help you accomplish your goals</Text> */}
       </View>
       <View style={{ paddingHorizontal: 20, marginBottom: 16, marginTop: 120, width: '100%' }}>
         <AppleAuthentication.AppleAuthenticationButton

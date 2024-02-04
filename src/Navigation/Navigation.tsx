@@ -2,64 +2,66 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { NavigationScreens } from '../types';
+import { NavigationScreens, TabsScreens } from '../types';
 import WelcomeScreen from '../Screens/Onboarding/WelcomeScreen';
 import { navigationRef } from './NavigationRef';
-import { LightTheme } from '../Theme/themes';
 import BackButton from '../Components/BackButton';
 import CloseButton from '../Components/CloseButton';
-import defaultStore from '../Stores/defaultStore';
+import defaultStore from '../Stores/store';
 import Home from '../Screens/Home';
-import OnboardingTheme from '../Screens/Onboarding/OnboardingTheme';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import MenuScreen from '../Screens/MenuScreen';
-import CustomizeScreen from '../Screens/CustomizeScreen';
-import NewPage from '../Screens/NewPage';
+import useTheme from '../Theme/useTheme';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ProfileSetupScreen from '../Screens/Onboarding/ProfileSetupScreen';
 
 const Stack = createNativeStackNavigator<NavigationScreens>();
 const Drawer = createDrawerNavigator<NavigationScreens>();
+const Tabs = createBottomTabNavigator<TabsScreens>();
 const renderCloseButton = () => <CloseButton navigate={true} />;
 const renderBackButton = () => <BackButton navigate={true} />;
 
+//Navigation with Tabs
+
 const Navigation = () => {
-  const user = defaultStore(state => state.user);
+  const { theme } = useTheme();
   return (
     <NavigationContainer
       ref={navigationRef}
-      theme={LightTheme}
+      theme={theme}
     >
       <Stack.Navigator initialRouteName='Welcome'>
-        <Stack.Screen
-          options={{
-            headerShown: false,
-            gestureEnabled: false,
-          }}
-          name="Main"
-          component={Main}
-        />
-        <Stack.Screen options={{ presentation: 'modal', animation: 'slide_from_bottom' }} name="CustomizeScreen" component={CustomizeScreen} />
-        <Stack.Screen options={{ animation: 'slide_from_right', headerShown: false }} name="NewPage" component={NewPage} />
+        <Stack.Screen options={{ headerShown: false, gestureEnabled: false }} name="Tabs" component={TabNavigator} />
         <Stack.Screen options={{ headerShown: false, gestureEnabled: false, animation: 'none' }} name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen options={{ headerShown: false, gestureEnabled: false, animation: 'none' }} name="OnboardingTheme" component={OnboardingTheme} />
+        <Stack.Screen options={{ gestureEnabled: false, animation: 'slide_from_right' }} name="ProfileSetup" component={ProfileSetupScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-const Main = () => {
+
+const TabNavigator = () => {
+  const colors = useTheme().theme.colors;
   return (
-    <Drawer.Navigator
-      drawerContent={() => <MenuScreen />}
+    <Tabs.Navigator
+      initialRouteName="Home"
       screenOptions={{
-        drawerPosition: 'right',
-        headerShown: false,
+        headerStyle: { backgroundColor: colors.surface1, position: 'absolute', zIndex: 1000 },
+        headerShadowVisible: false,
+        headerTitle: '',
       }}
-    // screenOptions={{ headerShown: false }}
     >
-      <Drawer.Screen options={{ drawerPosition: 'right' }} name="Home" component={Home} />
-    </Drawer.Navigator>
+      <Tabs.Screen
+        name="Home"
+        options={{
+          title: 'Home'
+        }}
+        component={Home}
+      />
+    </Tabs.Navigator>
   );
 };
+
 
 export default Navigation;
 

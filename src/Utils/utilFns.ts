@@ -28,29 +28,6 @@ export async function fetchDocuments<T>(key: string, queryConstraints: QueryFiel
   }
 };
 
-
-export async function apiListDiaries(user_id: string) {
-  try {
-    const res = await AsyncStorage.getItem('diaries');
-    if (res == null) return [];
-    return JSON.parse(res);
-  } catch (e) {
-    return [];
-  }
-}
-
-export async function apiGetDiary(diaryId: string | null) {
-  if (!diaryId) return null;
-  try {
-    const res = await AsyncStorage.getItem('diaries');
-    if (res == null) return [];
-    const d = JSON.parse(res);
-    return d.find((diary: any) => diary.id == diaryId) ?? null;
-  } catch (e) {
-    return [];
-  }
-}
-
 export async function uploadMedia(id: string, uri: string, resizeOptions?: ResizeOptions): Promise<Boolean> {
   const storageRef = ref(storage, id);
   let finalUri = uri;
